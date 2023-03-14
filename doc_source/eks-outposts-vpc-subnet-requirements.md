@@ -21,15 +21,15 @@ When you create the cluster, specify at least one private subnet\. If you specif
 
 ### Subnet Access to AWS Services<a name="subnet-connectivity"></a>
 
-The subnets used to create the cluster must have access to AWS services in order to create a cluster. This can be achieved using a [NAT gateway](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html) or using using [VPC endpoints](https://docs.aws.amazon.com/vpc/latest/privatelink/concepts.html).
+The private subnets where clusters are created must be able to communicate with AWS services. This can be achieved using a [NAT gateway](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html) (outbound internet access) or [VPC endpoints](https://docs.aws.amazon.com/vpc/latest/privatelink/concepts.html) (private cluster).
 
 #### Using NAT Gateway<a name="using-nat-gateway"></a>
 
-The private subnets must have an associated route table that has a route to a [NAT gateway](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html) that runs in a public subnet in the Outpost's parent Availability Zone\. The public subnet must have a route to an [internet gateway](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Internet_Gateway.html)\. This route enables outbound internet access and prevents unsolicited inbound connections from the internet to instances on the Outpost\.
+The private subnets must have an associated route table that has a route to a [NAT gateway](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html) that runs in a public subnet in the Outpost's parent Availability Zone. The public subnet must have a route to an [internet gateway](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Internet_Gateway.html). This route enables outbound internet access and prevents unsolicited inbound connections from the internet to instances on the Outpost.
 
 #### Using VPC Endpoints<a name="using-vpc-endpoints"></a>
 
-If the subnet that you're creating a local cluster in doesn't have an ingress or egress internet connection, then you must create the following interface VPC endpoints and gateway endpoint before creating your cluster\. The endpoints must be created in a shared private subnet located in Outpost's parent Availability Zone, it must have private DNS names enabled and have an attached security group that permits inbound HTTPS traffic from the CIDR range of the private subnet\. 
+If the subnet that you're creating a local cluster in doesn't have an ingress or egress internet connection, then you must create the following interface VPC endpoints and gateway endpoint before creating your cluster\. The endpoints must be created in a private subnet located in Outpost's parent Availability Zone, they must have private DNS names enabled and they must have an attached security group that permits inbound HTTPS traffic from the CIDR range of the private outpost subnet.
 
 Creating endpoints incurs charges\. For more information, see [AWS PrivateLink pricing](http://aws.amazon.com/privatelink/pricing/)\. If your pods need access to other AWS services, then you need to create additional endpoints\. For a comprehensive list of endpoints, see [AWS services that integrate with AWS PrivateLink](https://docs.aws.amazon.com/vpc/latest/privatelink/aws-services-privatelink-support.html)\.    
 [\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/eks/latest/userguide/eks-outposts-vpc-subnet-requirements.html)
